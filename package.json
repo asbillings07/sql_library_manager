@@ -1,0 +1,26 @@
+{
+  "name": "sql_library_manager",
+  "version": "1.0.0",
+  "description": "A sql database library",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asbillings07/sql_library_manager.git"
+  },
+  "author": "Aaron Billings",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asbillings07/sql_library_manager/issues"
+  },
+  "homepage": "https://github.com/asbillings07/sql_library_manager#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pug": "^2.0.4",
+    "sequelize": "^5.8.10",
+    "sequelize-cli": "^5.5.0",
+    "sqlite3": "^4.0.9"
+  }
+}
