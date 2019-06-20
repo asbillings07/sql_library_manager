@@ -19,6 +19,7 @@
   "homepage": "https://github.com/asbillings07/sql_library_manager#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "nodemon": "^1.19.1",
     "pug": "^2.0.4",
     "sequelize": "^5.8.10",
     "sequelize-cli": "^5.5.0",
