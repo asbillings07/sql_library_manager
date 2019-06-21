@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 });
 
 sequelize.sync().then(() => {
-  app.listen(4000, () => {
-    console.log("Server is running on server 4000!");
+  app.listen(9000, () => {
+    console.log("Server is running on server 9000! It's over 9000!!!!");
   });
 });
