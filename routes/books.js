@@ -22,7 +22,7 @@ router.post("/books/new", (req, res) => {
 //get /books/:id - Shows book detail form.
 router.get("/books/:id", (req, res) => {
   Book.findByPk(req.params.id).then(book => {
-    render("books/show", {
+    render("update-book", {
       book: book,
       title: book.title
     });
