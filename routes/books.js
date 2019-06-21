@@ -16,7 +16,7 @@ router.get("/books/new", (req, res) => {
 //post /books/new - Posts a new book to the database.
 router.post("/books/new", (req, res) => {
   Book.create(req.body).then(book => {
-    res.redirect(`/books/${books.id}`);
+    res.redirect(`/books/${book.id}`);
   });
 });
 //get /books/:id - Shows book detail form.
@@ -24,7 +24,10 @@ router.get("/books/:id", (req, res) => {
   Book.findByPk(req.params.id).then(book => {
     render("update-book", {
       book: book,
-      title: book.title
+      title: book.title,
+      author: book.author,
+      genre: book.genre,
+      year: book.year
     });
   });
 });
