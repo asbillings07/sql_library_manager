@@ -11,65 +11,12 @@ block content
                 th Author
                 th Genre
                 th Year
+    each book in books
         tbody
             tr
                 td
-                    a(href='book_detail.html') A Brief History of Time
-                td Stephen Hawking
-                td Non Fiction
-                td 1988
-            tr
-                td
-                    a(href='book_detail.html') Armada
-                td Ernest Cline
-                td Science Fiction
-                td 2015
-            tr
-                td
-                    a(href='book_detail.html') Emma
-                td Jane Austen
-                td Classic
-                td 1815
-            tr
-                td
-                    a(href='book_detail.html') Frankenstein
-                td Mary Shelley
-                td Horror
-                td 1818
-            tr
-                td
-                    a(href='book_detail.html') Harry Potter and the Chamber of Secrets
-                td J.K. Rowling
-                td Fantasy
-                td 1998
-            tr
-                td
-                    a(href='book_detail.html') Harry Potter and the Deathly Hallows
-                td J.K. Rowling
-                td Fantasy
-                td 2007
-            tr
-                td
-                    a(href='book_detail.html') Harry Potter and the Goblet of Fire
-                td J.K. Rowling
-                td Fantasy
-                td 2000
-            tr
-                td
-                    a(href='book_detail.html') Harry Potter and the Half-Blood Prince
-                td J.K. Rowling
-                td Fantasy
-                td 2005
-            tr
-                td
-                    a(href='book_detail.html') Harry Potter and the Order of the Phoenix
-                td J.K. Rowling
-                td Fantasy
-                td 2003
-            tr
-                td
-                    a(href='book_detail.html') Harry Potter and the Philosopher's Stone
-                td J.K. Rowling
-                td Fantasy
-                td 1997
+                    a(href='book_detail.html') #{book.title}
+                td= book.author
+                td= book.genre
+                td= book.year
             
