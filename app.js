@@ -1,18 +1,24 @@
 const express = require("express");
 const app = express();
-
+const sequelize = require("./models").sequelize;
+const bookRoutes = require("./routes/books");
+const mainRoute = require("./routes/index");
 // view engine
-app.set("views", path.join(__dirname, "views"));
+
 app.set("view engine", "pug");
-app.use("/static", express.static(path.join(__dirname, "public")));
-app.use("/", routes);
-app.use("/books", books);
+app.use("/static", express.static("public"));
+
+app.use(bookRoutes);
+app.use(mainRoute);
+
 app.use((req, res, next) => {
   const err = new Error("Not Found");
   err.status = 404;
   next(err);
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on server 3000!");
+sequelize.sync().then(() => {
+  app.listen(4000, () => {
+    console.log("Server is running on server 4000!");
+  });
 });

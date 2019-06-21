@@ -6,12 +6,12 @@ const Book = require("../models").Book;
 //get /books - Shows the full list of books.
 router.get("/books", (req, res) => {
   Book.findAll().then(books => {
-    res.render("", { books: books, title: "My Library!" });
+    res.render("index", { books: books, title: "My Library!" });
   });
 });
 //get /books/new - Shows the create new book form.
 router.get("/books/new", (req, res) => {
-  render("books/new", { book: Book.build(), title: "New Book" });
+  res.render("new-book", { book: Book.build(), title: "New Book" });
 });
 //post /books/new - Posts a new book to the database.
 router.post("/books/new", (req, res) => {
