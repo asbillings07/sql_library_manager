@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
+const bodyParser = require("body-parser");
 
 const Book = require("../models").Book;
 
 //get /books - Shows the full list of books.
 router.get("/books", (req, res) => {
-  Book.findAll().then(books => {
-    res.render("index", { books: books, title: "My Library!" });
+  Book.findAll({ order: [["title"]] }).then(books => {
+    res.render("index", { books: books, title: "The Library" });
   });
 });
 //get /books/new - Shows the create new book form.
@@ -22,12 +23,8 @@ router.post("/books/new", (req, res) => {
 //get /books/:id - Shows book detail form.
 router.get("/books/:id", (req, res) => {
   Book.findByPk(req.params.id).then(book => {
-    render("update-book", {
-      book: book,
-      title: book.title,
-      author: book.author,
-      genre: book.genre,
-      year: book.year
+    res.render("update-book", {
+      book: book
     });
   });
 });
