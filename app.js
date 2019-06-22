@@ -26,8 +26,10 @@ app.use((err, req, res, next) => {
     console.log(err.status);
     console.log(err.message);
     console.log(err.stack);
+    res.render("error");
   } else {
     res.status(500);
+    res.render("page-not-found");
     console.log(500);
     console.log(err.message);
     console.log(err.stack);
