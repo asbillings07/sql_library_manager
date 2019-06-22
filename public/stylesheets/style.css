@@ -24,6 +24,9 @@ input[type="submit"] {
   border-radius: 2px;
   cursor: pointer;
 }
+a.button {
+  padding: 5px;
+}
 
 form a.button,
 input[type="submit"] {
