@@ -6,7 +6,7 @@ const Book = require("../models").Book;
 //get /books - Shows the full list of books.
 router.get("/books", (req, res) => {
   const paginate = ({ page, pageSize }) => {
-    const offset = page * pageSize;
+    const offset = page * pageSize - pageSize;
     const limit = offset + pageSize;
 
     return {
@@ -15,11 +15,14 @@ router.get("/books", (req, res) => {
     };
   };
 
-  Book.findAndCountAll().then(() => {});
+  Book.findAndCountAll().then(book => {
+    console.log(book.count);
+  });
+  let { page } = req.query;
 
   Book.findAll({
     order: [["createdAt", "DESC"]],
-    ...paginate({ page: 0, pageSize: 5 })
+    ...paginate({ page, pageSize: 5 })
   })
     .then(books => {
       res.render("index", {
@@ -33,6 +36,7 @@ router.get("/books", (req, res) => {
       res.render("page-not-found");
     });
 });
+
 router.get("/find", (req, res) => {
   let { word } = req.query;
   word = word.toLowerCase();
@@ -41,9 +45,9 @@ router.get("/find", (req, res) => {
     where: {
       [Op.or]: [
         { title: { [Op.like]: `%${word}%` } },
-        { author: { [Op.like]: `%${word} %` } },
-        { genre: { [Op.like]: `% ${word} % ` } },
-        { year: { [Op.like]: `% ${word}%` } }
+        { author: { [Op.like]: `%${word}%` } },
+        { genre: { [Op.like]: `%${word}% ` } },
+        { year: { [Op.like]: `%${word}%` } }
       ]
     }
   })
