@@ -3,7 +3,8 @@ extends layout
 block content 
 
     h1= title
-    form
+        include errors
+    form(action=`/books/${book.id}`, method="post")
         p
             label(for='title') Title
             input#title(name='title', type='text', value= book.title)
