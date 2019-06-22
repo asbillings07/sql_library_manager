@@ -1,7 +1,11 @@
 extends layout
 
 block content
-    h1 Books
+    h1= title
+
+    form(action="/books/find")
+        input(type='text', name="word")
+        button(type="submit") Find Book
     p
     a.button(href='/books/new') Create New Book
     table
@@ -19,4 +23,5 @@ block content
                 td= book.author
                 td= book.genre
                 td= book.year
-            
+    button(href=`#`) Previous Page
+    button(href=`#`) Next Page        
