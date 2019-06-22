@@ -6,20 +6,20 @@ block content
     form
         p
             label(for='title') Title
-            input#title(name='title', type='text', value='A Brief History of Time')
+            input#title(name='title', type='text', value= book.title)
         p
             label(for='author') Author
-            input#author(name='author', type='text', value='Stephen Hawking')
+            input#author(name='author', type='text', value= book.author)
         p
             label(for='genre') Genre
-            input#genre(name='genre', type='text', value='Non-fiction')
+            input#genre(name='genre', type='text', value= book.genre)
         p
             label(for='year') Year
-            input#year(name='year', type='text', value='1988')
+            input#year(name='year', type='text', value= book.year)
         p
             input(type='submit', value='Update Book')
-    form(method='post', action='/books/8/delete', onsubmit="return confirm('Do you really want to delete this book?');")
+    form(method='post', action=`/books/${book.id}/delete`, onsubmit="return confirm('Do you really want to delete this book?');")
         p
-            a.button(href='all_books.html') Cancel
+            a.button(href=`/`) Cancel
         p
             input(type='submit', value='Delete Book')
