@@ -5,12 +5,13 @@ const Book = require("../models").Book;
 
 //get /books - Shows the full list of books.
 router.get("/books", (req, res) => {
-  Book.findAll({ order: [["title"]] })
+  Book.findAll({ order: [["createdAt", "DESC"]] })
     .then(books => {
       res.render("index", { books: books, title: "The Library" });
     })
     .catch(err => {
       res.sendStatus(500);
+      res.render("page-not-found");
     });
 });
 //get /books/new - Shows the create new book form.
@@ -20,7 +21,18 @@ router.get("/books/new", (req, res) => {
 //post /books/new - Posts a new book to the database.
 router.post("/books/new", (req, res) => {
   Book.create(req.body)
-    .then(res.redirect(`/books`))
+    .then(() => res.redirect(`/books`))
+    .catch(err => {
+      if (err.name === "SequelizeValidationError") {
+        res.render("new-book", {
+          book: Book.build(req.body),
+          title: "New Book",
+          errors: err.errors
+        });
+      } else {
+        throw err;
+      }
+    })
     .catch(err => {
       res.sendStatus(500);
     });
@@ -39,10 +51,11 @@ router.get("/books/:id", (req, res) => {
     })
     .catch(err => {
       res.sendStatus(500);
+      res.render("page-not-found");
     });
 });
 //post /books/:id - Updates book info in the database.
-router.put("/books/:id", (req, res) => {
+router.post("/books/:id", (req, res) => {
   Book.findByPk(req.params.id)
     .then(book => {
       if (book) {
@@ -51,11 +64,25 @@ router.put("/books/:id", (req, res) => {
         res.sendStatus(404);
       }
     })
-    .then(book => {
-      res.redirect(`/books/${book.id}`);
+    .then(() => {
+      res.redirect(`/books`);
+    })
+    .catch(err => {
+      if (err.name === "SequelizeValidationError") {
+        const book = Book.build(req.body);
+        book.id = req.params.id;
+        res.render("update-book", {
+          book: book,
+          title: "Update Book",
+          errors: err.errors
+        });
+      } else {
+        throw err;
+      }
     })
     .catch(err => {
       res.sendStatus(500);
+      res.render("page-not-found");
     });
 });
 
@@ -66,7 +93,8 @@ router.post("/books/:id/delete", (req, res) => {
       if (book) {
         return book.destroy();
       } else {
-        res.sendStatus(404);
+        // res.sendStatus(404);
+        res.render("error");
       }
     })
     .then(() => {
@@ -74,6 +102,7 @@ router.post("/books/:id/delete", (req, res) => {
     })
     .catch(err => {
       res.sendStatus(500);
+      res.render("page-not-found");
     });
 });
 
