@@ -3,7 +3,9 @@ extends layout
 block content
 
     h1= title
-    form
+        include errors
+
+    form(action='/books/new', method= "post")
         p
             label(for='title') Title
             input#title(name='title', type='text' value=book.title)
@@ -17,6 +19,7 @@ block content
             label(for='year') Year
             input#year(name='year', type='text' value= book.year)
         p
-            input(type='submit', value='Create New Book')
+            input(type='submit', value= "Create New Book")
         p
+    
             a.button(href='/books') Cancel
