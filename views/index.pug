@@ -2,10 +2,10 @@ extends layout
 
 block content
     h1= title
-
-    form(action="/books/find")
-        input(type='text', name="word", placeholder="search for a book in our Library...")
-        a.textButton(type="submit") Find Book
+    include search-form
+    if searched
+        p
+          a.button(href='/') Clear Search
     p
     a.button(href='/books/new') Create New Book
     table

@@ -42,29 +42,33 @@ router.get("/books", (req, res) => {
         res.sendStatus(500);
       });
   });
+});
 
-  router.get("/find", (req, res) => {
-    let { word } = req.query;
-    word = word.toLowerCase();
+router.get("/search", (req, res) => {
+  let { word } = req.query;
+  word = word.toLowerCase();
+  const searched = true;
 
-    Book.findAll({
-      where: {
-        [Op.or]: [
-          { title: { [Op.like]: `%${word}%` } },
-          { author: { [Op.like]: `%${word}%` } },
-          { genre: { [Op.like]: `%${word}% ` } },
-          { year: { [Op.like]: `%${word}%` } }
-        ]
+  Book.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${word}%` } },
+        { author: { [Op.like]: `%${word}%` } },
+        { genre: { [Op.like]: `%${word}% ` } },
+        { year: { [Op.like]: `%${word}%` } }
+      ]
+    }
+  })
+    .then(books => {
+      if (books) {
+        res.render("index", { books, title, searched, word });
+      } else {
+        res.sendStatus(404, "Page Not Found!");
       }
     })
-      .then(books => {
-        res.render("index", { books: books, title: "Books", isFind: true });
-      })
-      .catch(err => {
-        console.log(err);
-        console.log(err.message);
-      });
-  });
+    .catch(err => {
+      res.sendStatus(500, err);
+    });
 });
 //get /books/new - Shows the create new book form.
 router.get("/books/new", (req, res) => {
