@@ -26,6 +26,7 @@ input[type="submit"] {
 }
 a.button {
   padding: 5px;
+  margin-left: 7px;
 }
 
 form a.button,
@@ -100,4 +101,14 @@ input[type="text"] {
 
 .errors {
   color: rgb(236, 15, 15);
+}
+.textButton {
+  margin-left: 12px;
+  padding: 11px;
+  color: white;
+  background: #019875;
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  border-radius: 2px;
+  cursor: pointer;
 }
