@@ -3,7 +3,7 @@ extends layout
 block content
 
     h1= title
-        include errors
+        include ./includes/errors.pug
 
     form(action='/books/new', method= "post")
         p

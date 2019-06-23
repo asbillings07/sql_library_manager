@@ -2,7 +2,7 @@ extends layout
 
 block content
     h1= title
-    include search-form
+    include ./includes/search-form.pug
     if searched
         p
           a.button(href='/') Clear Search
