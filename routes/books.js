@@ -5,59 +5,66 @@ const Book = require("../models").Book;
 
 //get /books - Shows the full list of books.
 router.get("/books", (req, res) => {
-  const paginate = ({ page, pageSize }) => {
-    const offset = page * pageSize - pageSize;
-    const limit = offset + pageSize;
-
-    return {
-      offset,
-      limit
-    };
-  };
-
   Book.findAndCountAll().then(book => {
-    console.log(book.count);
-  });
-  let { page } = req.query;
+    let limit = 5;
+    let pageSize = Math.ceil(book.count / limit);
 
-  Book.findAll({
-    order: [["createdAt", "DESC"]],
-    ...paginate({ page, pageSize: 5 })
-  })
-    .then(books => {
-      res.render("index", {
-        books: books,
-        title: "The Library",
-        paginate
-      });
-    })
-    .catch(err => {
-      res.sendStatus(500);
-      res.render("page-not-found");
-    });
-});
-
-router.get("/find", (req, res) => {
-  let { word } = req.query;
-  word = word.toLowerCase();
-
-  Book.findAll({
-    where: {
-      [Op.or]: [
-        { title: { [Op.like]: `%${word}%` } },
-        { author: { [Op.like]: `%${word}%` } },
-        { genre: { [Op.like]: `%${word}% ` } },
-        { year: { [Op.like]: `%${word}%` } }
-      ]
+    let page;
+    if (req.query.page === undefined) {
+      page = 0;
+    } else {
+      page = +req.query.page;
     }
-  })
-    .then(books => {
-      res.render("index", { books: books, title: "Books", isFind: true });
+    const paginate = ({ page, pageSize }) => {
+      const offset = page * pageSize - pageSize;
+      const limit = 5;
+
+      return {
+        offset,
+        limit
+      };
+    };
+
+    Book.findAll({
+      order: [["createdAt", "DESC"]],
+      ...paginate({ page, pageSize })
     })
-    .catch(err => {
-      console.log(err);
-      console.log(err.message);
-    });
+      .then(books => {
+        res.render("index", {
+          books: books,
+          title: "The Library",
+          paginate,
+          page,
+          pageSize
+        });
+      })
+      .catch(err => {
+        res.sendStatus(500);
+      });
+  });
+
+  router.get("/find", (req, res) => {
+    let { word } = req.query;
+    word = word.toLowerCase();
+
+    Book.findAll({
+      where: {
+        [Op.or]: [
+          { title: { [Op.like]: `%${word}%` } },
+          { author: { [Op.like]: `%${word}%` } },
+          { genre: { [Op.like]: `%${word}% ` } },
+          { year: { [Op.like]: `%${word}%` } }
+        ]
+      }
+    })
+      .then(books => {
+        res.render("index", { books: books, title: "Books", isFind: true });
+      })
+      .catch(err => {
+        console.log(err);
+        console.log(err.message);
+      });
+  });
 });
 //get /books/new - Shows the create new book form.
 router.get("/books/new", (req, res) => {

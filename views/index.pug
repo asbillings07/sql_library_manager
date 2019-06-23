@@ -23,5 +23,8 @@ block content
                 td= book.author
                 td= book.genre
                 td= book.year
-    button(href=`/books/?page=${1}`) Previous Page
-    button(href=`/books/?page=${2}`) Next Page        
+            
+    a.button(href=`/books?page=${page > 1 ? page -1 : page = 1 }`) Previous Page
+    a.button(href=`/books?page=${page < 4 ? page +1 : page = 4}`) Next Page   
+    
+         
