@@ -1,11 +1,15 @@
 extends layout
 
 block content
+    
     h1= title
+    if count === 0
+       include ./includes/noResults.pug
     include ./includes/search-form.pug
     if searched
         p
           a.button(href='/') Clear Search
+  
     p
     a.button(href='/books/new') Create New Book
     table
