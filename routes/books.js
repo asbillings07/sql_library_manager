@@ -26,7 +26,7 @@ router.get("/books", (req, res) => {
         limit
       };
     };
-
+    // adds pagination
     Book.findAll({
       order: [["createdAt", "DESC"]],
       ...paginate({ page, pageSize })
@@ -45,7 +45,7 @@ router.get("/books", (req, res) => {
       });
   });
 });
-
+// adds search feature
 router.get("/books/find", (req, res) => {
   let { word } = req.query;
   word = word.toLowerCase();
