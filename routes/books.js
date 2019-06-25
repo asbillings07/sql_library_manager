@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const sequelize = require("sequelize");
+const Op = sequelize.Op;
 
 const Book = require("../models").Book;
 
@@ -44,30 +46,41 @@ router.get("/books", (req, res) => {
   });
 });
 
-router.get("/search", (req, res) => {
+router.get("/books/find", (req, res) => {
   let { word } = req.query;
   word = word.toLowerCase();
   const searched = true;
 
-  Book.findAll({
+  Book.findAndCountAll({
     where: {
       [Op.or]: [
-        { title: { [Op.like]: `%${word}%` } },
+        {
+          title: { [Op.like]: `%${word}%` }
+        },
         { author: { [Op.like]: `%${word}%` } },
         { genre: { [Op.like]: `%${word}% ` } },
         { year: { [Op.like]: `%${word}%` } }
       ]
-    }
+    },
+    order: [["title", "DESC"]],
+    limit: 7
   })
     .then(books => {
       if (books) {
-        res.render("index", { books, title, searched, word });
+        res.render("index", {
+          books: books.rows,
+          title: `Search Results for ${word}`,
+          searched,
+          word,
+          count: books.count
+        });
+        console.log(books.rows);
       } else {
         res.sendStatus(404, "Page Not Found!");
       }
     })
     .catch(err => {
-      res.sendStatus(500, err);
+      console.log(err);
     });
 });
 //get /books/new - Shows the create new book form.
