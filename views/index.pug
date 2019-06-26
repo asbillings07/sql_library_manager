@@ -28,7 +28,7 @@ block content
                 td= book.genre
                 td= book.year
             
-    a.button(href=`/books?page=${page > 1 ? page -1 : page = 1 }&pageSize=${pageSize}`) Previous Page
+    a.button(href=`/books?page=${page > 0 ? page -1 : page = 1 }&pageSize=${pageSize}`) Previous Page
     a.button(href=`/books?page=${page < 4 ? page +1 : page = 4}&pageSize=${pageSize}`) Next Page   
     
          
