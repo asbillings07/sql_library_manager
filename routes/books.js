@@ -1,3 +1,5 @@
+const { findPaginationFactors } = require("./findPaginationFactors");
+
 const express = require("express");
 const router = express.Router();
 const sequelize = require("sequelize");
@@ -5,46 +7,22 @@ const Op = sequelize.Op;
 
 const Book = require("../models").Book;
 
-//get /books - Shows the full list of books.
 router.get("/books", (req, res) => {
-  Book.findAndCountAll().then(book => {
-    let limit = 5;
-    let pageSize = Math.ceil(book.count / limit);
-
-    let page;
-    if (req.query.page === undefined) {
-      page = 0;
-    } else {
-      page = +req.query.page;
-    }
-    const paginate = ({ page, pageSize }) => {
-      const offset = page * pageSize - pageSize;
-      const limit = 5;
-
-      return {
-        offset,
-        limit
-      };
-    };
-    // adds pagination
-    Book.findAll({
-      order: [["createdAt", "DESC"]],
-      ...paginate({ page, pageSize })
-    })
-      .then(books => {
-        res.render("index", {
-          books: books,
-          title: "The Library",
-          paginate,
-          page,
-          pageSize
-        });
-      })
-      .catch(err => {
-        res.sendStatus(500);
+  const { limit, offset, page, pageSize } = findPaginationFactors(req);
+  Book.findAndCountAll({ order: [["createdAt", "DESC"]], limit, offset })
+    .then(books => {
+      res.render("index", {
+        books: books.rows,
+        title: "The Library",
+        page,
+        pageSize
       });
-  });
+    })
+    .catch(err => {
+      res.sendStatus(500);
+    });
 });
+
 // adds search feature
 router.get("/books/find", (req, res) => {
   let { word } = req.query;
