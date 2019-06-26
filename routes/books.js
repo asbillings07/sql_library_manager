@@ -19,7 +19,7 @@ router.get("/books", (req, res) => {
       });
     })
     .catch(err => {
-      res.sendStatus(500);
+      res.render("error", { error: err });
     });
 });
 
@@ -58,7 +58,7 @@ router.get("/books/find", (req, res) => {
       }
     })
     .catch(err => {
-      console.log(err);
+      res.render("error", { error: err });
     });
 });
 //get /books/new - Shows the create new book form.
@@ -81,7 +81,7 @@ router.post("/books/new", (req, res) => {
       }
     })
     .catch(err => {
-      res.sendStatus(500);
+      res.render("error", { error: err });
     });
 });
 //get /books/:id - Shows book detail form.
@@ -97,8 +97,7 @@ router.get("/books/:id", (req, res) => {
       }
     })
     .catch(err => {
-      res.sendStatus(500);
-      res.render("page-not-found");
+      res.render("error", { error: err });
     });
 });
 //post /books/:id - Updates book info in the database.
@@ -128,8 +127,7 @@ router.post("/books/:id", (req, res) => {
       }
     })
     .catch(err => {
-      res.sendStatus(500);
-      res.render("page-not-found");
+      res.render("error", { error: err });
     });
 });
 
@@ -148,8 +146,7 @@ router.post("/books/:id/delete", (req, res) => {
       res.redirect("/books");
     })
     .catch(err => {
-      res.sendStatus(500);
-      res.render("page-not-found");
+      res.render("error", { error: err });
     });
 });
 
