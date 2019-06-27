@@ -18,11 +18,23 @@ const findPaginationFactors = req => {
     pageSize
   };
 };
+// try and catch function
+function asyncHandler(cb) {
+  return async (req, res, next) => {
+    try {
+      await cb(req, res, next);
+    } catch (err) {
+      res.render("error", { error: err });
+    }
+  };
+}
 
 // renders pagination function and route
-router.get("/books", async (req, res) => {
-  const { limit, offset, page, pageSize } = findPaginationFactors(req);
-  try {
+router.get(
+  "/books",
+  asyncHandler(async (req, res) => {
+    const { limit, offset, page, pageSize } = findPaginationFactors(req);
+
     const books = await Book.findAndCountAll({
       order: [["createdAt", "DESC"]],
       limit,
@@ -34,17 +46,17 @@ router.get("/books", async (req, res) => {
       page,
       pageSize
     });
-  } catch (err) {
-    res.render("error", { error: err });
-  }
-});
+  })
+);
 
 // adds search feature
-router.get("/books/find", async (req, res) => {
-  let { word } = req.query;
-  word = word.toLowerCase();
-  const searched = true;
-  try {
+router.get(
+  "/books/find",
+  asyncHandler(async (req, res) => {
+    let { word } = req.query;
+    word = word.toLowerCase();
+    const searched = true;
+
     const books = await Book.findAndCountAll({
       where: {
         [Op.or]: [
@@ -66,10 +78,8 @@ router.get("/books/find", async (req, res) => {
       word,
       count: books.count
     });
-  } catch (err) {
-    res.render("error", { error: err });
-  }
-});
+  })
+);
 //get /books/new - Shows the create new book form.
 router.get("/books/new", (req, res) => {
   res.render("new-book", { book: Book.build(), title: "New Book" });
@@ -91,16 +101,15 @@ router.post("/books/new", async (req, res) => {
 });
 
 //get /books/:id - Shows book detail form.
-router.get("/books/:id", async (req, res) => {
-  try {
+router.get(
+  "/books/:id",
+  asyncHandler(async (req, res) => {
     const book = await Book.findByPk(req.params.id);
     res.render("update-book", {
       book: book
     });
-  } catch (err) {
-    res.render("error", { error: err });
-  }
-});
+  })
+);
 //post /books/:id - Updates book info in the database.
 router.post("/books/:id", async (req, res) => {
   try {
@@ -119,15 +128,14 @@ router.post("/books/:id", async (req, res) => {
   }
 });
 //post /books/:id/delete - Deletes a book. Careful, this can’t be undone.
-router.post("/books/:id/delete", async (req, res) => {
-  try {
+router.post(
+  "/books/:id/delete",
+  asyncHandler(async (req, res) => {
     const book = await Book.findByPk(req.params.id);
     return book.destroy().then(() => {
       res.redirect("/books");
     });
-  } catch (err) {
-    res.render("error", { error: err });
-  }
-});
+  })
+);
 
 module.exports = router;
