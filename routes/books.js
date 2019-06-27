@@ -40,42 +40,35 @@ router.get("/books", async (req, res) => {
 });
 
 // adds search feature
-router.get("/books/find", (req, res) => {
+router.get("/books/find", async (req, res) => {
   let { word } = req.query;
   word = word.toLowerCase();
   const searched = true;
-
-  Book.findAndCountAll({
-    where: {
-      [Op.or]: [
-        {
-          title: { [Op.like]: `%${word}%` }
-        },
-        { author: { [Op.like]: `%${word}%` } },
-        { genre: { [Op.like]: `%${word}% ` } },
-        { year: { [Op.like]: `%${word}%` } }
-      ]
-    },
-    order: [["title", "DESC"]],
-    limit: 7
-  })
-    .then(books => {
-      if (books) {
-        res.render("index", {
-          books: books.rows,
-          title: `Search Results for ${word}`,
-          searched,
-          word,
-          count: books.count
-        });
-        console.log(books.rows);
-      } else {
-        res.sendStatus(404, "Page Not Found!");
-      }
-    })
-    .catch(err => {
-      res.render("error", { error: err });
+  try {
+    const books = await Book.findAndCountAll({
+      where: {
+        [Op.or]: [
+          {
+            title: { [Op.like]: `%${word}%` }
+          },
+          { author: { [Op.like]: `%${word}%` } },
+          { genre: { [Op.like]: `%${word}% ` } },
+          { year: { [Op.like]: `%${word}%` } }
+        ]
+      },
+      order: [["title", "DESC"]],
+      limit: 7
     });
+    res.render("index", {
+      books: books.rows,
+      title: `Search Results for ${word}`,
+      searched,
+      word,
+      count: books.count
+    });
+  } catch (err) {
+    res.render("error", { error: err });
+  }
 });
 //get /books/new - Shows the create new book form.
 router.get("/books/new", (req, res) => {
@@ -125,7 +118,6 @@ router.post("/books/:id", async (req, res) => {
     }
   }
 });
-
 //post /books/:id/delete - Deletes a book. Careful, this can’t be undone.
 router.post("/books/:id/delete", async (req, res) => {
   try {

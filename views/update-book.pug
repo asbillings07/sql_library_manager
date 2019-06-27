@@ -6,10 +6,10 @@ block content
         include ./includes/errors.pug
     form(action=`/books/${book.id}`, method="post")
         p
-            label(for='title') Title
+            label(for='title') Title (required)
             input#title(name='title', type='text', value= book.title)
         p
-            label(for='author') Author
+            label(for='author') Author (required)
             input#author(name='author', type='text', value= book.author)
         p
             label(for='genre') Genre
