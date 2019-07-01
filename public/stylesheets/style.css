@@ -1,6 +1,7 @@
 body {
   padding: 10px 50px 50px;
-  font: 18px "Garamond", serif;
+  font: 18px 'Garamond', serif;
+  background: #d8b493;
 }
 
 a {
@@ -15,10 +16,10 @@ a:hover {
 }
 
 a.button,
-input[type="submit"] {
+input[type='submit'] {
   color: white;
   background: #019875;
-  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
   padding: 10px 14px 12px;
   font-size: 14px;
   border-radius: 2px;
@@ -30,17 +31,17 @@ a.button {
 }
 
 form a.button,
-input[type="submit"] {
+input[type='submit'] {
   margin-left: 140px;
   transition: 0.4s;
 }
 
-input[type="submit"] {
+input[type='submit'] {
   border: 0;
 }
 
 a.button:hover,
-input[type="submit"]:hover {
+input[type='submit']:hover {
   background-color: #01b189;
 }
 
@@ -87,14 +88,14 @@ label {
 
 input {
   padding: 10px;
-  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
   font-size: 14px;
   border-radius: 2px;
   border-color: #e7e7e7;
   transition: 0.4s;
 }
 
-input[type="text"] {
+input[type='text'] {
   margin-left: 7px;
   width: 300px;
 }
@@ -107,7 +108,7 @@ input[type="text"] {
   padding: 11px;
   color: white;
   background: #019875;
-  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
   font-size: 14px;
   border-radius: 2px;
   cursor: pointer;
@@ -118,8 +119,12 @@ input[type="text"] {
   padding: 11px;
   color: white;
   background: #019875;
-  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
   font-size: 14px;
   border-radius: 2px;
   cursor: pointer;
+}
+.library {
+  height: 300px;
+  width: 1134px;
 }
