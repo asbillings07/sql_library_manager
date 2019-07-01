@@ -4,7 +4,7 @@
 
 This is an example Library Application that allows you view all the books in the library. You can (CRUD) Create, Read, Update or Delete books. You can also move between pages in the library and even search the library for a book. .
 
-You can view this site live at the link here:
+You can view this site live at the link here: https://sql-library-app.herokuapp.com/books
 
 ## Languages/Libraries/Frameworks Used
 
