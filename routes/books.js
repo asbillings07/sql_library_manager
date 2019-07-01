@@ -1,9 +1,9 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const sequelize = require("sequelize");
+const sequelize = require('sequelize');
 const Op = sequelize.Op;
 
-const Book = require("../models").Book;
+const Book = require('../models').Book;
 
 // pagination function
 const findPaginationFactors = req => {
@@ -15,7 +15,7 @@ const findPaginationFactors = req => {
     offset,
     limit,
     page,
-    pageSize
+    pageSize,
   };
 };
 // try and catch function
@@ -24,34 +24,34 @@ function asyncHandler(cb) {
     try {
       await cb(req, res, next);
     } catch (err) {
-      res.render("error", { error: err });
+      res.render('error', { error: err });
     }
   };
 }
 
 // renders pagination function and route
 router.get(
-  "/books",
+  '/books',
   asyncHandler(async (req, res) => {
     const { limit, offset, page, pageSize } = findPaginationFactors(req);
 
     const books = await Book.findAndCountAll({
-      order: [["createdAt", "DESC"]],
+      order: [['createdAt', 'DESC']],
       limit,
-      offset
+      offset,
     });
-    res.render("index", {
+    res.render('index', {
       books: books.rows,
-      title: "The Library",
+      title: 'The Library',
       page,
-      pageSize
+      pageSize,
     });
   })
 );
 
 // adds search feature
 router.get(
-  "/books/find",
+  '/books/find',
   asyncHandler(async (req, res) => {
     let { word } = req.query;
     word = word.toLowerCase();
@@ -61,40 +61,40 @@ router.get(
       where: {
         [Op.or]: [
           {
-            title: { [Op.like]: `%${word}%` }
+            title: { [Op.like]: `%${word}%` },
           },
           { author: { [Op.like]: `%${word}%` } },
           { genre: { [Op.like]: `%${word}% ` } },
-          { year: { [Op.like]: `%${word}%` } }
-        ]
+          { year: { [Op.like]: `%${word}%` } },
+        ],
       },
-      order: [["title", "DESC"]],
-      limit: 7
+      order: [['title', 'DESC']],
+      limit: 7,
     });
-    res.render("index", {
+    res.render('index', {
       books: books.rows,
       title: `Search Results for ${word}`,
       searched,
       word,
-      count: books.count
+      count: books.count,
     });
   })
 );
 //get /books/new - Shows the create new book form.
-router.get("/books/new", (req, res) => {
-  res.render("new-book", { book: Book.build(), title: "New Book" });
+router.get('/books/new', (req, res) => {
+  res.render('new-book', { book: Book.build(), title: 'New Book' });
 });
 
 //post /books/new - Posts a new book to the database.
-router.post("/books/new", async (req, res) => {
+router.post('/books/new', async (req, res) => {
   try {
-    await Book.create(req.body).then(() => res.redirect("/books"));
+    await Book.create(req.body).then(() => res.redirect('/books'));
   } catch (err) {
-    if (err.name === "SequelizeValidationError") {
-      res.render("new-book", {
+    if (err.name === 'SequelizeValidationError') {
+      res.render('new-book', {
         book: Book.build(req.body),
-        title: "New Book",
-        errors: err.errors
+        title: 'New Book',
+        errors: err.errors,
       });
     }
   }
@@ -102,38 +102,38 @@ router.post("/books/new", async (req, res) => {
 
 //get /books/:id - Shows book detail form.
 router.get(
-  "/books/:id",
+  '/books/:id',
   asyncHandler(async (req, res) => {
     const book = await Book.findByPk(req.params.id);
-    res.render("update-book", {
-      book: book
+    res.render('update-book', {
+      book: book,
     });
   })
 );
 //post /books/:id - Updates book info in the database.
-router.post("/books/:id", async (req, res) => {
+router.post('/books/:id', async (req, res) => {
   try {
     const book = await Book.findByPk(req.params.id);
-    return book.update(req.body).then(() => res.redirect("/books"));
+    return book.update(req.body).then(() => res.redirect('/books'));
   } catch (err) {
-    if (err.name === "SequelizeValidationError") {
+    if (err.name === 'SequelizeValidationError') {
       const book = Book.build(req.body);
       book.id = req.params.id;
-      res.render("update-book", {
+      res.render('update-book', {
         book: book,
-        title: "Update Book",
-        errors: err.errors
+        title: 'Update Book',
+        errors: err.errors,
       });
     }
   }
 });
 //post /books/:id/delete - Deletes a book. Careful, this can’t be undone.
 router.post(
-  "/books/:id/delete",
+  '/books/:id/delete',
   asyncHandler(async (req, res) => {
     const book = await Book.findByPk(req.params.id);
     return book.destroy().then(() => {
-      res.redirect("/books");
+      res.redirect('/books');
     });
   })
 );
