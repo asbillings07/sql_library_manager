@@ -42,7 +42,7 @@ router.get(
     });
     res.render('index', {
       books: books.rows,
-      title: 'The Library',
+      title: 'BookIt!',
       page,
       pageSize,
     });
@@ -114,7 +114,7 @@ router.get(
 router.post('/books/:id', async (req, res) => {
   try {
     const book = await Book.findByPk(req.params.id);
-    return book.update(req.body).then(() => res.redirect('/books'));
+    book.update(req.body).then(() => res.redirect('/books'));
   } catch (err) {
     if (err.name === 'SequelizeValidationError') {
       const book = Book.build(req.body);
